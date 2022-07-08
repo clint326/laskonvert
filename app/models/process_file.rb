@@ -1,0 +1,2 @@
+class ProcessFile < ApplicationRecord
+end

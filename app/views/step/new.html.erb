@@ -1,0 +1,39 @@
+<h1 class="text-3xl font-bold">Step <%= params[:process_id] %></h1>
+
+<% if @process %>
+  <% if @previous_process %>
+    <%= form_with model: @process, url: process_step_index_path(@next_step), class: "bg-gray-200 p-4 rounded shadow-lg" do |f| %>
+      <div>
+        <div>Current Text</div>
+        <div class="w-full rounded bg-white">
+          <%= @previous_process.text.html_safe %> ok
+          <%= f.hidden_field :text, value: @previous_process.text %>
+        </div>
+      </div>
+      <div class="flex justify-center align-items mt-2">
+      <%= link_to "cancel", root_path %>
+      <%= f.submit @label, class: "ml-2 bg-green-500 rounded px-1 text-white hover:bg-green-600" %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= form_with model: @process, url: process_step_index_path(@next_step), class: "bg-gray-200 p-4 rounded shadow-lg" do |f| %>
+      <div>
+        <div>Paste in text to transform</div>
+        <%= f.text_area :text, rows: 20, class: "w-full rounded" %>
+      </div>
+      <div class="flex justify-center align-items">
+      <%= link_to "cancel", root_path%>
+      <%= f.submit "Next", class: "ml-2 bg-green-500 rounded px-1 text-white hover:bg-green-600" %>
+      </div>
+    <% end %>
+  <% end %>
+<% else %>
+  <h2>you have reached the last step</h2>
+  <div class="w-full rounded bg-white">
+    <%= @previous_process.text.html_safe %> ok
+  </div>
+  <div class="mt-4 text-center">
+    <%= link_to "Download file", nil, class: "bg-blue-500 text-white text-xl px-2 py-1 rounded" %>
+    <%= button_to "Start Over", process_path(0), method: :delete, class: "bg-red-500 text-white text-xl px-2 py-1 rounded" %>
+  </div>
+<% end %>
